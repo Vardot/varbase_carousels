@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.varbase_carousel_block
+    - field.field.block_content.varbase_carousel_block.field_media_carousel_slide
+  module:
+    - field_group
+third_party_settings:
+  field_group:
+    group_carousel_information:
+      children:
+        - info
+        - field_media_carousel_slide
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: 'Carousel information'
+id: block_content.varbase_carousel_block.default
+targetEntityType: block_content
+bundle: varbase_carousel_block
+mode: default
+content:
+  field_media_carousel_slide:
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  info:
+    type: string_textfield
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

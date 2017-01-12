@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: varbase_carousels_mobile
+label: 'Varbase Carousels Mobile'
+effects:
+  d164fa7c-d09c-4084-8cb1-3b4d2f1a6553:
+    uuid: d164fa7c-d09c-4084-8cb1-3b4d2f1a6553
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 380
+      height: 350

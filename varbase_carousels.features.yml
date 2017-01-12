@@ -1,0 +1,4 @@
+bundle: varbase
+excluded:
+  - image.style.slick_media
+required: true

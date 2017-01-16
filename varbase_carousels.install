@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the varbase carousels.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function varbase_carousels_requirements($phase) {
+
+  $requirements = [];
+
+  $path = DRUPAL_ROOT . '/libraries/slick/slick/slick.min.js'; 
+
+  // Is the library found in the root libraries path.
+  $library_found = file_exists($path);
+
+  // If library is not found, then look in the current profile libraries path.
+  if (!$library_found) {
+    $profile_path = drupal_get_path('profile', drupal_get_profile());
+    $profile_path .= '/libraries/slick/slick/slick.min.js';
+    // Is the library found in the current profile libraries path.
+    $library_found = file_exists($profile_path);
+  }
+
+  if (!$library_found) {
+    $requirements['slick_library'] = array(
+      'title' => t('Slick library missing'),
+      'description' => t('Varbase carousels requires the slick.min.js library.
+        Download it (https://github.com/kenwheeler/slick) and place it in the
+        libraries folder (/libraries)'),
+      'severity' => REQUIREMENT_ERROR,
+    );
+  }
+
+  return $requirements;
+}

@@ -14,5 +14,5 @@ dependencies:
   - slick
   - slick_media
   - varbase_media
-version: 8.x-4.0-beta14
+version: 8.x-4.0-alpha1
 package: Varbase

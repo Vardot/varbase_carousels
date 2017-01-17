@@ -12,7 +12,7 @@ function varbase_carousels_requirements($phase) {
 
   $requirements = [];
 
-  $path = DRUPAL_ROOT . '/libraries/slick/slick/slick.min.js'; 
+  $path = DRUPAL_ROOT . '/libraries/slick/slick/slick.min.js';
 
   // Is the library found in the root libraries path.
   $library_found = file_exists($path);

@@ -114,5 +114,4 @@ content:
       ds:
         ds_limit: ''
     type: slick_media
-hidden:
-  langcode: true
+hidden: {  }

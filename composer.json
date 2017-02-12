@@ -7,10 +7,25 @@
   "prefer-stable": true,
   "authors": [
     {
-      "name": "Vardot",
-      "role": "Development"
+      "name": "Mohammed J. Razem",
+      "homepage": "https://github.com/moerazem",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Ahmad Abbad",
+      "homepage": "https://github.com/ahmad-abbad",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Rajab Natshah",
+      "homepage": "https://github.com/Natshah",
+      "role": "Maintainer"
     }
   ],
+  "support": {
+    "issues": "http://drupal.org/project/issues/varbase_carousels",
+    "source": "http://cgit.drupalcode.org/varbase_carousels"
+  },
   "repositories": [
     {
       "type": "composer",
@@ -18,7 +33,13 @@
     }
   ],
   "require": {
-    "drupal/slick": "1.0-beta6",
-    "drupal/slick_media": "1.0-beta7"
+    "drupal/slick": "^1.0-rc2",
+    "drupal/slick_views": "^1.0-rc2",
+    "drupal/inline_entity_form": "^1.0-beta1"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-8.x-4.x": "8.4.x-dev"
+    }
   }
 }

@@ -1,18 +1,23 @@
 name: 'Varbase Carousels'
 description: 'This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site.'
 type: module
-core: 8.x
 dependencies:
   - block_content
+  - dropzonejs_eb_widget
   - ds
+  - entity_browser
+  - entity_browser_entity_form
   - field
-  - field_group
   - image
-  - language
+  - inline_entity_form
   - media_entity
   - responsive_image
   - slick
   - slick_media
   - varbase_media
-version: 8.x-4.0-alpha1
+  - views
 package: Varbase
+version: 8.x-4.0-alpha2
+core: 8.x
+project: varbase_carousels
+datestamp: 1484669286

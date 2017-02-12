@@ -1,0 +1,45 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - media_entity.bundle.image
+    - views.view.browser
+  module:
+    - dropzonejs_eb_widget
+    - media_entity
+    - views
+name: ceroslider_media_browser
+label: 'Ceroslider media browser'
+display: iframe
+display_configuration:
+  width: 100%
+  height: '500'
+  link_text: 'Select Images'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  c0f40fdd-aaab-4a01-b6b7-9971031480f6:
+    settings:
+      media_entity_bundle: image
+      upload_location: 'public://[date:custom:Y]-[date:custom:m]'
+      dropzone_description: 'Drop files here to upload them'
+      max_filesize: 32M
+      extensions: 'jpg jpeg gif png'
+      submit_text: 'Select Images'
+    uuid: c0f40fdd-aaab-4a01-b6b7-9971031480f6
+    weight: -9
+    label: Upload
+    id: dropzonejs_media_entity
+  8fe85ba3-e465-4c65-b862-023ff686fd79:
+    settings:
+      view: browser
+      view_display: images_browser
+      submit_text: 'Select Images'
+      auto_select: false
+    uuid: 8fe85ba3-e465-4c65-b862-023ff686fd79
+    weight: -10
+    label: Library
+    id: view

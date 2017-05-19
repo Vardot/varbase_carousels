@@ -5,6 +5,8 @@
  * Install, update and uninstall functions for the varbase carousels.
  */
 
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * Implements hook_requirements().
  */
@@ -36,4 +38,38 @@ function varbase_carousels_requirements($phase) {
   }
 
   return $requirements;
+}
+
+/**
+ * Issue #2879649: Revised naming for [Carousels Entity Browser], and bettered
+ * up the upload behaviour with edit.
+ */
+function varbase_carousels_update_8001() {
+  // Create the carousels media browser with the right naming.
+  $carousels_media_browser_config = \Drupal::service('config.factory')->getEditable('entity_browser.browser.carousels_media_browser');
+  $carousels_media_browser_config_file = \Drupal::root() . '/' . drupal_get_path('module', 'varbase_carousels') . '/config/install/entity_browser.browser.carousels_media_browser.yml';
+  $carousels_media_browser_config_content = file_get_contents($carousels_media_browser_config_file);
+  $carousels_media_browser_config_content_data = (array) Yaml::parse($carousels_media_browser_config_content);
+  $carousels_media_browser_config->setData($carousels_media_browser_config_content_data)->save();
+
+  // Update the entity form display varbase carousel block.
+  $entity_form_display_config = \Drupal::service('config.factory')->getEditable('core.entity_form_display.block_content.varbase_carousel_block.default');
+  $entity_form_display_config_file = \Drupal::root() . '/' . drupal_get_path('module', 'varbase_carousels') . '/config/install/core.entity_form_display.block_content.varbase_carousel_block.default.yml';
+  $entity_form_display_config_content = file_get_contents($entity_form_display_config_file);
+  $entity_form_display_config_content_data = (array) Yaml::parse($entity_form_display_config_content);
+  $entity_form_display_config->setData($entity_form_display_config_content_data)->save();
+  
+  // Update the entity view display varbase carousel block.
+  $entity_view_display_config = \Drupal::service('config.factory')->getEditable('core.entity_view_display.block_content.varbase_carousel_block.default');
+  $entity_view_display_config_file = \Drupal::root() . '/' . drupal_get_path('module', 'varbase_carousels') . '/config/install/core.entity_view_display.block_content.varbase_carousel_block.default.yml';
+  $entity_view_display_config_content = file_get_contents($entity_view_display_config_file);
+  $entity_view_display_config_content_data = (array) Yaml::parse($entity_view_display_config_content);
+  $entity_view_display_config->setData($entity_view_display_config_content_data)->save();
+
+  // Entity updates to clear up any mismatched entity and/or field definitions,
+  // and Fix changes were detected in the entity type and field definitions.
+  \Drupal::entityDefinitionUpdateManager()->applyUpdates();
+  
+  // Delete the wrong carousels_media_browser name.
+  \Drupal::service('config.factory')->getEditable('entity_browser.browser.ceroslider_media_browser')->delete();
 }

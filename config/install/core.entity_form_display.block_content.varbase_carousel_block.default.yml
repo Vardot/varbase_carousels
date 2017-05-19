@@ -24,8 +24,9 @@ content:
       match_operator: CONTAINS
     third_party_settings:
       entity_browser_entity_form:
-        entity_browser_id: ceroslider_media_browser
+        entity_browser_id: carousels_media_browser
     type: inline_entity_form_complex
+    region: content
   info:
     type: string_textfield
     weight: 0
@@ -33,4 +34,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden: {  }

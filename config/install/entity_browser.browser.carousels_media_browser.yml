@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - media_entity.bundle.image
+    - media.bundle.image
     - views.view.browser
   module:
     - dropzonejs_eb_widget
-    - media_entity
+    - media
     - views
 name: carousels_media_browser
 label: 'Carousels Media Browser'
@@ -34,7 +34,7 @@ widgets:
   e15272db-181e-4f4c-91df-b12696332209:
     settings:
       form_mode: default
-      media_entity_bundle: image
+      media_bundle: image
       upload_location: 'public://[date:custom:Y]-[date:custom:m]'
       dropzone_description: 'Drop image files here to upload them'
       max_filesize: 32M
@@ -43,4 +43,4 @@ widgets:
     uuid: e15272db-181e-4f4c-91df-b12696332209
     weight: 3
     label: Upload
-    id: dropzonejs_media_entity_inline_entity_form
+    id: dropzonejs_media_inline_entity_form

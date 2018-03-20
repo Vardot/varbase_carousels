@@ -10,7 +10,7 @@ dependencies:
   - field
   - image
   - inline_entity_form
-  - media
+  - media_entity
   - responsive_image
   - slick
   - slick_media

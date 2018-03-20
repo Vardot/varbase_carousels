@@ -11,35 +11,4 @@ Download it (https://github.com/kenwheeler/slick)
 and place it in the libraries folder (/libraries)
 
 To keep track of the library in your composer.json file of the project, you
-could add:
-
-```
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://packages.drupal.org/8"
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "kenwheeler/slick",
-        "version": "1.6.0",
-        "type": "drupal-library",
-        "source": {
-          "url": "https://github.com/kenwheeler/slick",
-          "type": "git",
-          "reference": "origin/master"
-        }
-      }
-    }
-  ],
-```
-
-And then in the require part: 
-
-
-```
-  "require": {
-    "kenwheeler/slick": "1.6.0"
-  }
-```
+could add.

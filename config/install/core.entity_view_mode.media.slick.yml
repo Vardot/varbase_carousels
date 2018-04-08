@@ -5,7 +5,7 @@ dependencies:
     module:
       - slick_media
   module:
-    - media_entity
+    - media
 id: media.slick
 label: 'Slick carousel'
 targetEntityType: media

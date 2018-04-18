@@ -39,9 +39,9 @@ content:
       optionset_thumbnail: ''
       skin: default
       skin_thumbnail: ''
-      image_style: d4_traditional
-      thumbnail_style: d4_traditional
-      responsive_image_style: d4_traditional
+      image_style: d04_traditional
+      thumbnail_style: d04_traditional
+      responsive_image_style: d04_traditional
       thumbnail_effect: ''
       thumbnail_position: ''
       media_switch: ''

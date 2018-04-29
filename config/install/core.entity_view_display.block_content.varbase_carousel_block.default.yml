@@ -7,25 +7,6 @@ dependencies:
   module:
     - ds
     - slick_media
-third_party_settings:
-  ds:
-    layout:
-      id: ds_1col
-      library: null
-      disable_css: false
-      entity_classes: all_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-    regions:
-      ds_content:
-        - field_media_carousel_slide
 id: block_content.varbase_carousel_block.default
 targetEntityType: block_content
 bundle: varbase_carousel_block
@@ -45,10 +26,10 @@ content:
       thumbnail_effect: ''
       thumbnail_position: ''
       media_switch: ''
-      view_mode: default
+      view_mode: s04_traditional
       ratio: ''
       iframe_lazy: true
-      image: field_image
+      image: ''
       title: ''
       link: ''
       layout: ''
@@ -80,7 +61,7 @@ content:
       vanilla: false
       background: false
       caption:
-        field_image: '0'
+        field_media_image: '0'
       override: false
       overridables:
         arrows: '0'
@@ -112,7 +93,13 @@ content:
     third_party_settings:
       ds:
         ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
     type: slick_media
-    region: ds_content
+    region: content
 hidden:
   langcode: true

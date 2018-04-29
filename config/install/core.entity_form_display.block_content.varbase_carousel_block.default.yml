@@ -3,10 +3,10 @@ status: true
 dependencies:
   config:
     - block_content.type.varbase_carousel_block
+    - entity_browser.browser.image_browser
     - field.field.block_content.varbase_carousel_block.field_media_carousel_slide
   module:
-    - entity_browser_entity_form
-    - inline_entity_form
+    - entity_browser
 id: block_content.varbase_carousel_block.default
 targetEntityType: block_content
 bundle: varbase_carousel_block
@@ -15,17 +15,16 @@ content:
   field_media_carousel_slide:
     weight: 1
     settings:
-      form_mode: default
-      override_labels: true
-      label_singular: Image
-      label_plural: Images
-      allow_new: true
-      allow_existing: true
-      match_operator: CONTAINS
-    third_party_settings:
-      entity_browser_entity_form:
-        entity_browser_id: carousels_media_browser
-    type: inline_entity_form_complex
+      entity_browser: image_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      open: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: field_preview
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
     region: content
   info:
     type: string_textfield
@@ -35,4 +34,11 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
 hidden: {  }

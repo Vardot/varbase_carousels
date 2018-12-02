@@ -5,7 +5,6 @@ core: 8.x
 version: 8.x-6.x-dev
 package: Varbase
 dependencies:
-  - varbase_core:varbase_core
   - varbase_media:varbase_media
   - slick:slick
   - slick_media:slick_media

@@ -22,7 +22,7 @@
     }
   ],
   "require": {
-    "drupal/varbase_media": "4.*" 
+    "drupal/varbase_media": "~4" 
   },
   "extra": {
     "branch-alias": {

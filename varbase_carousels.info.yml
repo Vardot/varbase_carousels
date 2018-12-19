@@ -7,6 +7,13 @@ package: Varbase
 dependencies:
   - drupal:block
   - drupal:block_content
+  - drupal:text
+  - drupal:field
+  - drupal:user
+  - drupal:options
+  - drupal:link
+  - drupal:filter
+  - ctools:ctools_block
   - varbase_media:varbase_media
   - slick:slick
   - slick_media:slick_media

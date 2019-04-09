@@ -4,6 +4,8 @@ dependencies:
   config:
     - block_content.type.varbase_carousel_block
     - field.field.block_content.varbase_carousel_block.field_media_carousel_slide
+    - image.style.d04_traditional
+    - responsive_image.styles.d04_traditional
   module:
     - ds
     - slick_media
@@ -20,15 +22,14 @@ content:
       optionset_thumbnail: ''
       skin: default
       skin_thumbnail: ''
-      image_style: d04_traditional
-      thumbnail_style: d04_traditional
+      image_style: ''
       responsive_image_style: d04_traditional
       thumbnail_effect: ''
       thumbnail_position: ''
       media_switch: ''
-      view_mode: s04_traditional
+      thumbnail_style: d04_traditional
       ratio: ''
-      iframe_lazy: true
+      view_mode: s04_traditional
       image: ''
       title: ''
       link: ''
@@ -40,23 +41,18 @@ content:
         xs:
           image_style: ''
           width: ''
-          breakpoint: ''
         sm:
           image_style: ''
           width: ''
-          breakpoint: ''
         md:
           image_style: ''
           width: ''
-          breakpoint: ''
         lg:
           image_style: ''
           width: ''
-          breakpoint: ''
         xl:
           image_style: ''
           width: ''
-          breakpoint: ''
       current_view_mode: default
       vanilla: false
       background: false
@@ -73,9 +69,7 @@ content:
         randomize: '0'
         variableWidth: '0'
       thumbnail: ''
-      preserve_keys: false
       thumbnail_caption: ''
-      visible_items: 0
       skin_arrows: ''
       skin_dots: ''
       style: ''
@@ -84,6 +78,8 @@ content:
       box_caption_custom: ''
       box_style: ''
       box_media_style: ''
+      preserve_keys: false
+      visible_items: 0
       grid: 0
       grid_header: ''
       grid_medium: 0

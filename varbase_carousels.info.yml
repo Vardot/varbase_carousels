@@ -3,8 +3,9 @@ description: 'This feature provides the base implementation for the carousels in
 type: module
 core: 8.x
 version: 8.x-7.x-dev
-package: Varbase
+package: 'Varbase Blocks'
 project: varbase_carousels
+core_version_requirement: ^8 || ^9
 dependencies:
   - drupal:block
   - drupal:block_content

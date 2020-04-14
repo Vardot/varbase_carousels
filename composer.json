@@ -19,7 +19,7 @@
     "drupal": {
       "type": "composer",
       "url": "https://packages.drupal.org/8"
-      },
+    },
     "assets": {
       "type": "composer",
       "url": "https://asset-packagist.org"
@@ -30,6 +30,7 @@
     "oomphinc/composer-installers-extender": "~1.0",
     "cweagans/composer-patches": "~1.0",
     "drupal/drupal-library-installer-plugin": "^0.3",
+    "drupal/core": "^8.8.0 || ~9.0.0",
     "drupal/varbase_media": "~7.0",
     "drupal/ctools": "~3.0"
   },

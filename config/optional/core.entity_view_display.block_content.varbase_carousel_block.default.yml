@@ -8,7 +8,7 @@ dependencies:
     - responsive_image.styles.d04_traditional
   module:
     - ds
-    - slick_media
+    - slick
 id: block_content.varbase_carousel_block.default
 targetEntityType: block_content
 bundle: varbase_carousel_block

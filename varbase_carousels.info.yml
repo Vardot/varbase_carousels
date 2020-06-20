@@ -15,4 +15,3 @@ dependencies:
   - ctools:ctools_block
   - varbase_media:varbase_media
   - slick:slick
-  - slick_media:slick_media

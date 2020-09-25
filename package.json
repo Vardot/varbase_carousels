@@ -1,0 +1,24 @@
+{
+  "name": "varbase_carousels",
+  "description": "This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site.",
+  "license": "GPL-2.0",
+  "private": true,
+  "engines": {
+    "yarn": ">= 1.6",
+    "node": ">= 8.11"
+  },
+  "keywords": [
+    "Drupal",
+    "Varbase",
+    "Slick",
+    "Varbase Carousels",
+    "Carousels"
+  ],
+  "author": "Vardot",
+  "scripts": {
+    "phpcs": "phpcs --standard=./.phpcs.xml .",
+    "phpcbf": "phpcbf --standard=./.phpcs.xml ."
+  },
+  "dependencies": {  },
+  "devDependencies": {  }
+}

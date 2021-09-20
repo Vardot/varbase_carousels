@@ -15,10 +15,10 @@ content:
   field_media_carousel_slide:
     weight: 1
     settings:
-      media_types: {  }
+      media_types: {}
     third_party_settings:
       media_library_edit:
-        show_edit: '1'
+        show_edit: "1"
     type: media_library_widget
     region: content
   info:
@@ -26,8 +26,8 @@ content:
     weight: 0
     settings:
       size: 60
-      placeholder: ''
-    third_party_settings: {  }
+      placeholder: ""
+    third_party_settings: {}
     region: content
   langcode:
     type: language_select
@@ -35,5 +35,5 @@ content:
     region: content
     settings:
       include_locked: true
-    third_party_settings: {  }
-hidden: {  }
+    third_party_settings: {}
+hidden: {}

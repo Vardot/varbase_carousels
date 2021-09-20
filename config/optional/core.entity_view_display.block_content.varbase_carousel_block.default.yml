@@ -19,82 +19,82 @@ content:
     label: hidden
     settings:
       optionset: varbase_carousel
-      optionset_thumbnail: ''
+      optionset_thumbnail: ""
       skin: default
-      skin_thumbnail: ''
-      image_style: ''
+      skin_thumbnail: ""
+      image_style: ""
       responsive_image_style: d04_traditional
-      thumbnail_effect: ''
-      thumbnail_position: ''
-      media_switch: ''
+      thumbnail_effect: ""
+      thumbnail_position: ""
+      media_switch: ""
       thumbnail_style: d04_traditional
-      ratio: ''
+      ratio: ""
       view_mode: s04_traditional
-      image: ''
-      title: ''
-      link: ''
-      layout: ''
-      class: ''
+      image: ""
+      title: ""
+      link: ""
+      layout: ""
+      class: ""
       cache: 0
-      sizes: ''
+      sizes: ""
       breakpoints:
         xs:
-          image_style: ''
-          width: ''
+          image_style: ""
+          width: ""
         sm:
-          image_style: ''
-          width: ''
+          image_style: ""
+          width: ""
         md:
-          image_style: ''
-          width: ''
+          image_style: ""
+          width: ""
         lg:
-          image_style: ''
-          width: ''
+          image_style: ""
+          width: ""
         xl:
-          image_style: ''
-          width: ''
+          image_style: ""
+          width: ""
       current_view_mode: default
       vanilla: false
       background: false
       caption:
-        field_media_image: '0'
+        field_media_image: "0"
       override: false
       overridables:
-        arrows: '0'
-        autoplay: '0'
-        dots: '0'
-        draggable: '0'
-        infinite: '0'
-        mouseWheel: '0'
-        randomize: '0'
-        variableWidth: '0'
-      thumbnail: ''
-      thumbnail_caption: ''
-      skin_arrows: ''
-      skin_dots: ''
-      style: ''
-      icon: ''
-      box_caption: ''
-      box_caption_custom: ''
-      box_style: ''
-      box_media_style: ''
+        arrows: "0"
+        autoplay: "0"
+        dots: "0"
+        draggable: "0"
+        infinite: "0"
+        mouseWheel: "0"
+        randomize: "0"
+        variableWidth: "0"
+      thumbnail: ""
+      thumbnail_caption: ""
+      skin_arrows: ""
+      skin_dots: ""
+      style: ""
+      icon: ""
+      box_caption: ""
+      box_caption_custom: ""
+      box_style: ""
+      box_media_style: ""
       preserve_keys: false
       visible_items: 0
       grid: 0
-      grid_header: ''
+      grid_header: ""
       grid_medium: 0
       grid_small: 0
-      id: ''
-      overlay: ''
+      id: ""
+      overlay: ""
     third_party_settings:
       ds:
-        ds_limit: ''
+        ds_limit: ""
         ft:
           id: default
           settings:
-            lb: ''
+            lb: ""
             lb-col: false
-            classes: {  }
+            classes: {}
     type: slick_media
     region: content
 hidden:

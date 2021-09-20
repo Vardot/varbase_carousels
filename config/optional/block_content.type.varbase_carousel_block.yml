@@ -1,7 +1,7 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies: {}
 id: varbase_carousel_block
 label: Carousel
 revision: 1
-description: 'A responsive and easy to customize slider block.'
+description: "A responsive and easy to customize slider block."

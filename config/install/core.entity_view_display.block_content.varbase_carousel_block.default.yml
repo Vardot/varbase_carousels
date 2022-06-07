@@ -64,7 +64,7 @@ content:
         autoplay: "0"
         dots: "0"
         draggable: "0"
-        infinite: "0"
+        infinite: "1"
         mouseWheel: "0"
         randomize: "0"
         variableWidth: "0"

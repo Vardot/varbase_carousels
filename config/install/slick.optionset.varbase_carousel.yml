@@ -34,7 +34,7 @@ options:
     draggable: true
     fade: false
     focusOnSelect: false
-    infinite: false
+    infinite: true
     initialSlide: 0
     lazyLoad: ondemand
     mouseWheel: false
@@ -79,7 +79,7 @@ options:
           draggable: true
           fade: false
           focusOnSelect: false
-          infinite: false
+          infinite: true
           initialSlide: 0
           respondTo: window
           rows: 1
@@ -111,7 +111,7 @@ options:
           draggable: true
           fade: false
           focusOnSelect: false
-          infinite: false
+          infinite: true
           initialSlide: 0
           respondTo: window
           rows: 1

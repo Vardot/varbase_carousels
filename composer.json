@@ -33,7 +33,7 @@
     "vardot/entity-definition-update-manager": "~1.0",
     "vardot/module-installer-factory": "~1.0",
     "drupal/varbase_media": "~9.0.0 || 9.0.x-dev",
-    "drupal/ctools": "~3.0"
+    "drupal/ctools": "~3.0 || ~4.0"
   },
   "extra": {
     "enable-patching": true,

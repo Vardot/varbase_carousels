@@ -13,7 +13,7 @@ use Vardot\Installer\ModuleInstallerFactory;
  */
 function varbase_carousels_install() {
 
-  // Processer for install: in varbase_carousels.info.yml file.
+  // Processor for install: in varbase_carousels.info.yml file.
   // ---------------------------------------------------------------------------.
   ModuleInstallerFactory::installList('varbase_carousels');
 

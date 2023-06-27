@@ -2,7 +2,7 @@ name: "Varbase Carousels"
 description: "This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site."
 type: module
 package: "Varbase Blocks"
-core_version_requirement: ~10.0
+core_version_requirement: ~10.1.0
 dependencies:
   - drupal:block
   - drupal:block_content

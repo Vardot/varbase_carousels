@@ -5,10 +5,6 @@
  * Install, update and uninstall functions for the varbase carousels.
  */
 
-use Symfony\Component\Yaml\Yaml;
-use Drupal\Core\Config\InstallStorage;
-use Drupal\Core\Config\StorageInterface;
-use Drupal\Core\Config\FileStorage;
 use Vardot\Entity\EntityDefinitionUpdateManager;
 use Vardot\Installer\ModuleInstallerFactory;
 
@@ -17,7 +13,7 @@ use Vardot\Installer\ModuleInstallerFactory;
  */
 function varbase_carousels_install() {
 
-  // Processer for install: in varbase_carousels.info.yml file.
+  // Processor for install: in varbase_carousels.info.yml file.
   // ---------------------------------------------------------------------------.
   ModuleInstallerFactory::installList('varbase_carousels');
 
@@ -30,6 +26,10 @@ function varbase_carousels_install() {
   \Drupal::classResolver()
     ->getInstanceFromDefinition(EntityDefinitionUpdateManager::class)
     ->applyUpdates();
+
+  // Add permissions.
+  ModuleInstallerFactory::addPermissions('varbase_carousels');
+
 }
 
 /**

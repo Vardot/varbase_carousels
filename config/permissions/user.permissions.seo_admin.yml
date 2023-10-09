@@ -1,0 +1,4 @@
+id: seo_admin
+permissions:
+  - 'create varbase_carousel_block block content'
+  - 'edit any varbase_carousel_block block content'

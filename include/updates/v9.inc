@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains varbase_api_update_9###(s) hook updates.
+ * Contains varbase_carousels_update_9###(s) hook updates.
  */
 
 use Vardot\Entity\EntityDefinitionUpdateManager;

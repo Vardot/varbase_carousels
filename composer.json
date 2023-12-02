@@ -26,17 +26,18 @@
     }
   },
   "require": {
-    "composer/installers": "~2.0",
-    "oomphinc/composer-installers-extender": "~2.0",
-    "cweagans/composer-patches": "~1.0",
+    "composer/installers": "~2",
+    "oomphinc/composer-installers-extender": "~2",
+    "cweagans/composer-patches": "~1",
     "drupal/core": "~9",
-    "vardot/entity-definition-update-manager": "~1.0",
-    "vardot/module-installer-factory": "~1.0",
-    "drupal/varbase_media": "~9.0",
-    "drupal/ctools": "~3.0 || ~4.0"
+    "vardot/entity-definition-update-manager": "~1",
+    "vardot/module-installer-factory": "~1",
+    "drupal/varbase_media": "~9",
+    "drupal/ctools": "~3 || ~4"
   },
   "extra": {
     "enable-patching": true,
-    "composer-exit-on-patch-failure": true
+    "composer-exit-on-patch-failure": true,
+    "patches": { }
   }
 }

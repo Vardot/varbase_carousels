@@ -3,7 +3,6 @@
   "description": "This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site.",
   "type": "drupal-module",
   "license": "GPL-2.0-or-later",
-  "minimum-stability": "dev",
   "authors": [
     {
       "name": "Vardot",
@@ -14,12 +13,6 @@
   "support": {
     "issues": "http://drupal.org/project/issues/varbase_carousels",
     "source": "http://cgit.drupalcode.org/varbase_carousels"
-  },
-  "repositories": {
-    "drupal": {
-      "type": "composer",
-      "url": "https://packages.drupal.org/8"
-    }
   },
   "require": {
     "drupal/core": "~11.2.0",

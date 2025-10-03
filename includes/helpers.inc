@@ -6,4 +6,3 @@
  *
  * Add custom needed helper functions.
  */
-

@@ -148,6 +148,15 @@ webship-js-test:
     # recipe's grantPermissions on those roles fails.
     - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval 'foreach (["site_admin"=>"Site Administrator","content_admin"=>"Content Administrator","editor"=>"Editor","seo_admin"=>"SEO Administrator"] as $id => $label) { if (!\Drupal\user\Entity\Role::load($id)) { \Drupal\user\Entity\Role::create(["id" => $id, "label" => $label])->save(); } }'
     - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
+    # varbase_media 10.1.x still declares `configure: varbase_media.settings` in
+    # its info.yml but ships no such route/settings form (fixed on its own 10.1.x
+    # branch, not yet released). Building the configure link during install fatals
+    # with "Route varbase_media.settings does not exist". Strip the line from the
+    # checked-out module for the test site only (does NOT change any committed
+    # varbase_carousels file).
+    - |
+      find "$CI_PROJECT_DIR/$_WEB_ROOT" -name 'varbase_media.info.yml' -print0 2>/dev/null \
+        | xargs -0 -r sed -i -E '/^configure:[[:space:]]*varbase_media\.settings[[:space:]]*$/d'
     # Provision Varbase Media by installing the module directly (its hook_install
     # imports the media types, entity browsers and views in order then applies the
     # recipes/default recipe). pm:install avoids the core Recipe runner checkpoint

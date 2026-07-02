@@ -18,7 +18,7 @@
         "drupal/core": "~11.4.0",
         "vardot/module-installer-factory": "~1",
         "vardot/entity-definition-update-manager": "~1",
-        "drupal/varbase_media": "~9",
+        "drupal/varbase_media": "~10.1.0",
         "drupal/ctools": "~3 || ~4"
     }
 }

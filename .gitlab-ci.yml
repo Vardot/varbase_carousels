@@ -108,6 +108,13 @@ webship-js-test:
   before_script:
     - !reference [.fragments, web_db]
     - git config --global --add safe.directory "$CI_PROJECT_DIR" || true
+    # Varbase Media config sets the image toolkit to ImageMagick. Install the
+    # ImageMagick CLI + WebP delegate so image derivative generation during the
+    # test install does not fatal (GD stays available as a fallback). webp is a
+    # best-effort extra; ignore it if the package index does not carry it.
+    - apt-get update -y > /dev/null || true
+    - apt-get install -y --no-install-recommends imagemagick > /dev/null || true
+    - apt-get install -y --no-install-recommends webp > /dev/null || true
     # Drupal core 11.4.0 (released 2026-07-01) is not yet installable through the
     # drupal.org Composer facade used by CI, so the composer job resolves to the
     # latest available 11.3.x. The static jobs (phpcs, phpstan, composer-lint)
@@ -118,8 +125,10 @@ webship-js-test:
     # The module under test lives at $CI_PROJECT_DIR root (not under the web
     # root), so relax both locations.
     - |
-      find "$CI_PROJECT_DIR" "$CI_PROJECT_DIR/$_WEB_ROOT" -path '*varbase*' -name '*.info.yml' -print0 \
-        | xargs -0 -r sed -i -E 's/core_version_requirement:[[:space:]]*~11\.4\.0/core_version_requirement: ^11.3 || ^11.4/'
+      for SCAN in "$CI_PROJECT_DIR" "$CI_PROJECT_DIR/$_WEB_ROOT"; do
+        find "$SCAN" -name '*.info.yml' -print0 2>/dev/null \
+          | xargs -0 -r sed -i -E 's/core_version_requirement:[[:space:]]*~11\.4\.0/core_version_requirement: ^11.3 || ^11.4/'
+      done
     - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT site:install standard
         --db-url=$SIMPLETEST_DB --account-name=webmaster --account-pass=dD.123123ddd
         --site-name="Varbase Carousels Test" -y
@@ -127,12 +136,27 @@ webship-js-test:
     - mkdir -p $CI_PROJECT_DIR/$_WEB_ROOT/libraries/dropzone/dist/min
     - curl -sSL https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.js -o $CI_PROJECT_DIR/$_WEB_ROOT/libraries/dropzone/dist/min/dropzone.min.js || true
     - chmod -R 777 $CI_PROJECT_DIR/$_WEB_ROOT/sites/default/files || true
-    # Install varbase_media first (its config), then varbase_carousels, via the
-    # module installer (bypasses the focal_point requirements gate; the carousel
-    # block form display depends on the media field config).
-    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval '\Drupal::service("module_installer")->install(["varbase_media"]);' || true
+    # Pre-install drimage_improved (a hard Varbase Media dependency) with its own
+    # container rebuild BEFORE varbase_media, otherwise its config event
+    # subscriber references the drimage_improved.image_style_repository service
+    # before the container is rebuilt and fatals with "non-existent service".
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT pm:install image drimage_improved -y
     - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
-    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval '\Drupal::service("module_installer")->install(["varbase_carousels"]);' || true
+    # Create the Varbase editorial roles (site_admin, content_admin, editor,
+    # seo_admin) that Varbase Media's default install recipe grants media
+    # permissions to. The Standard test profile lacks them; without them the
+    # recipe's grantPermissions on those roles fails.
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval 'foreach (["site_admin"=>"Site Administrator","content_admin"=>"Content Administrator","editor"=>"Editor","seo_admin"=>"SEO Administrator"] as $id => $label) { if (!\Drupal\user\Entity\Role::load($id)) { \Drupal\user\Entity\Role::create(["id" => $id, "label" => $label])->save(); } }'
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
+    # Provision Varbase Media by installing the module directly (its hook_install
+    # imports the media types, entity browsers and views in order then applies the
+    # recipes/default recipe). pm:install avoids the core Recipe runner checkpoint
+    # transaction, which fatals while rolling back on the first config warning.
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT pm:install varbase_media -y
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
+    # Install varbase_carousels: its config adds the Carousel block content type
+    # and the field_media_carousel_slide media reference field + view display.
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT pm:install varbase_carousels -y
     - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
     # Seed a carousel block + create the role and test users for the access matrix.
     - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval '$b = \Drupal\block_content\Entity\BlockContent::create(["type" => "varbase_carousel_block", "info" => "Demo Carousel"]); $b->save();' || true

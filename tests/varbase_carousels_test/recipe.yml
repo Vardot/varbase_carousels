@@ -1,0 +1,6 @@
+name: 'Varbase Carousels Test'
+description: 'Provisions a Standard site with Varbase Carousels (and Varbase Media) for the automated tests.'
+type: 'Testing'
+install:
+  - varbase_media
+  - varbase_carousels

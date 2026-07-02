@@ -33,4 +33,5 @@ function varbase_carousels_install() {
 
   // Add permissions.
   ModuleInstallerFactory::addPermissions('varbase_carousels');
+
 }

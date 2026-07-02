@@ -1,6 +1,6 @@
 {
   "name": "varbase_carousels",
-  "description": "Varbase Core provides the base configuration and shared modules for a Varbase site.",
+  "description": "This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site.",
   "license": "GPL-2.0-or-later",
   "private": true,
   "engines": {
@@ -10,8 +10,9 @@
   "keywords": [
     "Drupal",
     "Varbase",
-    "JSON API",
-    "Open API"
+    "Slick",
+    "Varbase Carousels",
+    "Carousels"
   ],
   "author": "Vardot",
   "scripts": {

@@ -1,23 +1,33 @@
 {
-  "name": "vardot/varbase_carousels",
-  "description": "This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site.",
-  "type": "drupal-module",
-  "license": "GPL-2.0-or-later",
-  "authors": [
-    {
-      "name": "Vardot",
-      "homepage": "https://www.drupal.org/vardot",
-      "role": "Maintainer"
+    "name": "vardot/varbase_carousels",
+    "description": "This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Vardot",
+            "homepage": "https://www.drupal.org/vardot",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "http://drupal.org/project/issues/varbase_carousels",
+        "source": "http://cgit.drupalcode.org/varbase_carousels"
+    },
+    "require": {
+        "drupal/core": "~11.4.0",
+        "vardot/varbase-patches": "~10.1.0",
+        "drupal/varbase_media": "~10.1.0",
+        "drupal/ctools": "~4"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true,
+            "vardot/varbase-patches": true,
+            "cweagans/composer-patches": true,
+            "composer/installers": true,
+            "drupal/core-composer-scaffold": true,
+            "oomphinc/composer-installers-extender": true
+        }
     }
-  ],
-  "support": {
-    "issues": "http://drupal.org/project/issues/varbase_carousels",
-    "source": "http://cgit.drupalcode.org/varbase_carousels"
-  },
-  "require": {
-    "drupal/core": "~11.4.0",
-    "vardot/varbase-patches": "~10.1.0",
-    "drupal/varbase_media": "~10.1.0",
-    "drupal/ctools": "~4"
-  }
 }

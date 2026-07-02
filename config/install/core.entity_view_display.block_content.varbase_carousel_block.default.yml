@@ -4,8 +4,6 @@ dependencies:
   config:
     - block_content.type.varbase_carousel_block
     - field.field.block_content.varbase_carousel_block.field_media_carousel_slide
-    - image.style.d04_traditional
-    - responsive_image.styles.d04_traditional
   module:
     - ds
     - slick
@@ -15,87 +13,73 @@ bundle: varbase_carousel_block
 mode: default
 content:
   field_media_carousel_slide:
-    weight: 0
+    type: slick_media
     label: hidden
     settings:
-      optionset: varbase_carousel
-      optionset_thumbnail: ""
-      skin: default
-      skin_thumbnail: ""
-      image_style: ""
-      responsive_image_style: d04_traditional
-      thumbnail_effect: ""
-      thumbnail_position: ""
-      media_switch: ""
-      thumbnail_style: d04_traditional
-      ratio: ""
-      view_mode: s04_traditional
-      image: ""
-      title: ""
-      link: ""
-      layout: ""
-      class: ""
-      cache: 0
-      sizes: ""
-      breakpoints:
-        xs:
-          image_style: ""
-          width: ""
-        sm:
-          image_style: ""
-          width: ""
-        md:
-          image_style: ""
-          width: ""
-        lg:
-          image_style: ""
-          width: ""
-        xl:
-          image_style: ""
-          width: ""
-      current_view_mode: default
-      vanilla: false
-      background: false
       caption:
-        field_media_image: "0"
-      override: false
+        title: '0'
+        alt: '0'
+      optionset: varbase_carousel
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      layout: ''
+      view_mode: media_04_03
+      cache: 0
+      skin: default
+      lazy: ''
+      style: ''
+      background: false
+      box_caption: ''
+      box_caption_custom: ''
+      box_media_style: ''
+      loading: ''
+      preload: false
+      responsive_image_style: ''
+      box_style: ''
+      image_style: ''
+      media_switch: rendered
+      ratio: '4:3'
+      thumbnail_style: ''
+      grid: '0'
+      grid_medium: '0'
+      grid_small: '0'
       overridables:
-        arrows: "0"
-        autoplay: "0"
-        dots: "0"
-        draggable: "0"
-        infinite: "1"
-        mouseWheel: "0"
-        randomize: "0"
-        variableWidth: "0"
-      thumbnail: ""
-      thumbnail_caption: ""
-      skin_arrows: ""
-      skin_dots: ""
-      style: ""
-      icon: ""
-      box_caption: ""
-      box_caption_custom: ""
-      box_style: ""
-      box_media_style: ""
+        arrows: '0'
+        autoplay: '0'
+        dots: '0'
+        draggable: '0'
+        infinite: '0'
+        mouseWheel: '0'
+        randomize: '0'
+        variableWidth: '0'
+      thumbnail: ''
+      optionset_thumbnail: ''
+      skin_thumbnail: ''
+      thumbnail_caption: ''
+      thumbnail_effect: ''
+      thumbnail_position: ''
+      override: false
+      skin_arrows: ''
+      skin_dots: ''
+      use_theme_field: false
       preserve_keys: false
-      visible_items: 0
-      grid: 0
-      grid_header: ""
-      grid_medium: 0
-      grid_small: 0
-      id: ""
-      overlay: ""
+      visible_items: null
     third_party_settings:
       ds:
-        ds_limit: ""
+        ds_limit: ''
         ft:
           id: default
           settings:
-            lb: ""
+            lb: ''
             lb-col: false
-            classes: {}
-    type: slick_media
+            classes: {  }
+    weight: 0
     region: content
 hidden:
   langcode: true
+  search_api_excerpt: true

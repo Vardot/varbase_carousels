@@ -1,23 +1,24 @@
 {
-  "name": "vardot/varbase_carousels",
-  "description": "This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site.",
-  "type": "drupal-module",
-  "license": "GPL-2.0-or-later",
-  "authors": [
-    {
-      "name": "Vardot",
-      "homepage": "https://www.drupal.org/vardot",
-      "role": "Maintainer"
+    "name": "vardot/varbase_carousels",
+    "description": "This feature provides the base implementation for the carousels in your website. Admins will be able to create carousels on the spot and place it anywhere in the site.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Vardot",
+            "homepage": "https://www.drupal.org/vardot",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "http://drupal.org/project/issues/varbase_carousels",
+        "source": "http://cgit.drupalcode.org/varbase_carousels"
+    },
+    "require": {
+        "drupal/core": "~11.4.0",
+        "vardot/module-installer-factory": "~1",
+        "vardot/entity-definition-update-manager": "~1",
+        "drupal/varbase_media": "~10.1.0",
+        "drupal/ctools": "~3 || ~4"
     }
-  ],
-  "support": {
-    "issues": "http://drupal.org/project/issues/varbase_carousels",
-    "source": "http://cgit.drupalcode.org/varbase_carousels"
-  },
-  "require": {
-    "drupal/core": "~11.3.0",
-    "vardot/varbase-patches": "~10.1.0",
-    "drupal/varbase_media": "~10.1.0",
-    "drupal/ctools": "~4"
-  }
 }

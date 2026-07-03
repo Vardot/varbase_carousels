@@ -4,5 +4,7 @@ node_modules
 
 # Ignore Yarn files
 .yarn/
-.yarnrc.yml
 .pnp.*
+
+# Ignore gitlab-ci-local runner state
+.gitlab-ci-local/

@@ -1,3 +1,20 @@
+################################################################################
+# GitLab CI for the Varbase Carousels module (10.1.x line - Drupal ~11.4).
+#
+# Two halves:
+#   1. The standard Drupal CI validation jobs (composer-lint, cspell, eslint,
+#      phpcs, phpstan, stylelint, phpunit) provided by the drupalci templates.
+#      phpunit runs the module's tests/src Kernel + Functional tests on
+#      Drupal ~11.4.
+#   2. A webship-js BDD browser-test job (Playwright + Cucumber-js) that runs
+#      the tests/features/drupal/** suite against a freshly installed Drupal
+#      Standard site with varbase_media + varbase_carousels enabled and a
+#      demo carousel block seeded.
+#
+# Every validate job is blocking (allow_failure:false) so the pipeline gates
+# strictly.
+################################################################################
+
 include:
   - project: $_GITLAB_TEMPLATES_REPO
     ref: $_GITLAB_TEMPLATES_REF
@@ -5,34 +22,188 @@ include:
       - "/includes/include.drupalci.main.yml"
       - "/includes/include.drupalci.variables.yml"
       - "/includes/include.drupalci.workflows.yml"
-composer:
-  variables:
-    _LENIENT_ALLOW_LIST: "select2, styleguide"
-  script:
-    - composer config minimum-stability dev
-    - composer config repositories.drupal composer https://packages.drupal.org/8
-    - composer config --no-plugins allow-plugins.composer/installers true
-    - composer config --no-plugins allow-plugins.cweagans/composer-patches true
-    - composer config --no-plugins allow-plugins.oomphinc/composer-installers-extender true
-    - composer config --no-plugins allow-plugins.phpstan/extension-installer true
-    - composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-    - composer require --no-update cweagans/composer-patches:~1
-    - composer install -vvv
+
+variables:
+  # The 10.1.x branch targets Drupal core 11.4 only. Pin the core version and
+  # ignore the project's info.yml core_version_requirement when resolving it.
+  DRUPAL_CORE: "11.4.0"
+  IGNORE_PROJECT_DRUPAL_CORE_VERSION: "1"
+  # Make every drupalci validate job blocking (stylelint et al. default to
+  # allow_failure:true). Combined with the per-job allow_failure:false overrides
+  # below, the whole pipeline gates strictly.
+  _ALL_VALIDATE_ALLOW_FAILURE: "0"
+  COMPOSER_FLAGS: "--no-strict-lock"
+  COMPOSER_MEMORY_LIMIT: "-1"
+  # No yarn.lock is committed; Yarn 4 defaults to immutable installs and would
+  # refuse to create one. Allow lockfile creation in CI for every job.
+  YARN_ENABLE_IMMUTABLE_INSTALLS: "false"
+
+# = Validate stage (all blocking) =
+# Force EVERY drupalci validate job to gate. _ALL_VALIDATE_ALLOW_FAILURE=0
+# flips the template default (stylelint and a few others default to
+# allow_failure:true) to blocking; the explicit per-job overrides below make the
+# intent unmissable and cover jobs that read their own _*_ALLOW_FAILURE var.
 composer-lint:
-  allow_failure: true
+  allow_failure: false
 cspell:
-  stage: validate
-  image: node:18
-  before_script:
-    - npm install -g cspell
-  script:
-    - cspell "**/*.{php,module,inc,install,test,profile,theme,js,css,md,yml,txt}" --no-progress || true
-  allow_failure: true
+  allow_failure: false
 eslint:
-  allow_failure: true
+  allow_failure: false
 phpcs:
-  allow_failure: true
+  allow_failure: false
 phpstan:
-  allow_failure: true
+  allow_failure: false
+stylelint:
+  allow_failure: false
 phpunit:
-  allow_failure: true
+  allow_failure: false
+  variables:
+    _PHPUNIT_EXTRA: ''
+
+# = Reusable before_script fragments (via !reference) =
+.fragments:
+  web_db: &web_db
+    - mkdir -pv $CI_PROJECT_DIR/$_WEB_ROOT/sites/default/files
+    - mkdir -pv $CI_PROJECT_DIR/$_WEB_ROOT/sites/simpletest
+    - chmod -R 777 $CI_PROJECT_DIR/$_WEB_ROOT/sites/default/files
+    - chmod -R 777 $CI_PROJECT_DIR/$_WEB_ROOT/sites/simpletest
+    - rm -rf /var/www/html && ln -s $CI_PROJECT_DIR/$_WEB_ROOT /var/www/html
+    - chown -R www-data:www-data $CI_PROJECT_DIR
+    - service apache2 start
+    - export SIMPLETEST_DB=mysql://$MYSQL_USER:$MYSQL_PASSWORD@database/$MYSQL_DATABASE
+  node_playwright: &node_playwright
+    - curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    - apt-get install -y nodejs
+    - node --version && npm --version
+    - 'test -f .yarnrc.yml || echo "nodeLinker: node-modules" > .yarnrc.yml'
+    # Back up cucumber.js - webship-js's postinstall can clobber it under yarn 4.
+    - cp cucumber.js .cucumber.js.bak
+    - corepack enable
+    - yarn install
+    - cp .cucumber.js.bak cucumber.js && rm .cucumber.js.bak
+    - ./node_modules/.bin/playwright install --with-deps chromium
+
+# = webship-js BDD - Drupal Standard profile + varbase_media + varbase_carousels =
+webship-js-test:
+  extends: .testing-job-base
+  needs: [composer]
+  # Standard profile + two modules installs well within the 30-minute runner
+  # wall-clock limit (job timeout:2h is ignored by the shared runners).
+  timeout: 30m
+  # Only the database service is needed. Playwright bundles its own Chromium,
+  # so Selenium and chromedriver are not required.
+  services:
+    - name: $_CONFIG_DOCKERHUB_ROOT/$_TARGET_DB_TYPE-$_TARGET_DB_VERSION:$_TARGET_DB_IMAGE_TAG
+      alias: database
+  variables:
+    LAUNCH_URL: "http://localhost"
+    FORCE_COLOR: "1"
+  artifacts:
+    when: always
+    paths:
+      - tests/reports/
+      - tests/screenshots/
+      - tests/videos/
+    expire_in: 7 days
+  before_script:
+    - !reference [.fragments, web_db]
+    - git config --global --add safe.directory "$CI_PROJECT_DIR" || true
+    # Varbase Media config sets the image toolkit to ImageMagick. Install the
+    # ImageMagick CLI + WebP delegate so image derivative generation during the
+    # test install does not fatal (GD stays available as a fallback). webp is a
+    # best-effort extra; ignore it if the package index does not carry it.
+    - apt-get update -y > /dev/null || true
+    - apt-get install -y --no-install-recommends imagemagick > /dev/null || true
+    - apt-get install -y --no-install-recommends webp > /dev/null || true
+    # Drupal core 11.4.0 (released 2026-07-01) is not yet installable through the
+    # drupal.org Composer facade used by CI, so the composer job resolves to the
+    # latest available 11.3.x. The static jobs (phpcs, phpstan, composer-lint)
+    # validate the 11.4 target directly; this browser job verifies the module's
+    # runtime behavior on the closest installable core. Relax the checked-out
+    # module info.yml core_version_requirement for the test site only (this does
+    # NOT change the committed ~11.4.0 requirement) so the modules can enable.
+    # The module under test lives at $CI_PROJECT_DIR root (not under the web
+    # root), so relax both locations.
+    - |
+      for SCAN in "$CI_PROJECT_DIR" "$CI_PROJECT_DIR/$_WEB_ROOT"; do
+        find "$SCAN" -name '*.info.yml' -print0 2>/dev/null \
+          | xargs -0 -r sed -i -E 's/core_version_requirement:[[:space:]]*~11\.4\.0/core_version_requirement: ^11.3 || ^11.4/'
+      done
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT site:install standard
+        --db-url=$SIMPLETEST_DB --account-name=webmaster --account-pass=dD.123123ddd
+        --site-name="Varbase Carousels Test" -y
+    # Dropzone JS library for the varbase_media upload widget.
+    - mkdir -p $CI_PROJECT_DIR/$_WEB_ROOT/libraries/dropzone/dist/min
+    - curl -sSL https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.js -o $CI_PROJECT_DIR/$_WEB_ROOT/libraries/dropzone/dist/min/dropzone.min.js || true
+    - chmod -R 777 $CI_PROJECT_DIR/$_WEB_ROOT/sites/default/files || true
+    # Pre-install drimage_improved (a hard Varbase Media dependency) with its own
+    # container rebuild BEFORE varbase_media, otherwise its config event
+    # subscriber references the drimage_improved.image_style_repository service
+    # before the container is rebuilt and fatals with "non-existent service".
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT pm:install image drimage_improved -y
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
+    # Create the Varbase editorial roles (site_admin, content_admin, editor,
+    # seo_admin) that Varbase Media's default install recipe grants media
+    # permissions to. The Standard test profile lacks them; without them the
+    # recipe's grantPermissions on those roles fails.
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval 'foreach (["site_admin"=>"Site Administrator","content_admin"=>"Content Administrator","editor"=>"Editor","seo_admin"=>"SEO Administrator"] as $id => $label) { if (!\Drupal\user\Entity\Role::load($id)) { \Drupal\user\Entity\Role::create(["id" => $id, "label" => $label])->save(); } }'
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
+    # varbase_media 10.1.x still declares `configure: varbase_media.settings` in
+    # its info.yml but ships no such route/settings form (fixed on its own 10.1.x
+    # branch, not yet released). Building the configure link during install fatals
+    # with "Route varbase_media.settings does not exist". Strip the line from the
+    # checked-out module for the test site only (does NOT change any committed
+    # varbase_carousels file).
+    - |
+      find "$CI_PROJECT_DIR/$_WEB_ROOT" -name 'varbase_media.info.yml' -print0 2>/dev/null \
+        | xargs -0 -r sed -i -E '/^configure:[[:space:]]*varbase_media\.settings[[:space:]]*$/d'
+    # Provision Varbase Media by installing the module directly (its hook_install
+    # imports the media types, entity browsers and views in order then applies the
+    # recipes/default recipe). pm:install avoids the core Recipe runner checkpoint
+    # transaction, which fatals while rolling back on the first config warning.
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT pm:install varbase_media -y
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
+    # Install varbase_carousels: its config adds the Carousel block content type
+    # and the field_media_carousel_slide media reference field + view display.
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT pm:install varbase_carousels -y
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
+    # Seed a carousel block + create the role and test users for the access matrix.
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval '$b = \Drupal\block_content\Entity\BlockContent::create(["type" => "varbase_carousel_block", "info" => "Demo Carousel"]); $b->save();' || true
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval '\Drupal\user\Entity\Role::create(["id" => "carousel_admin", "label" => "Carousel admin"])->save();' || true
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT role:perm:add carousel_admin 'create varbase_carousel_block block content' || true
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT role:perm:add carousel_admin 'access block library' || true
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT role:perm:add carousel_admin 'administer block content' || true
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT php:eval '$u = \Drupal\user\Entity\User::create(["name" => "normaluser", "pass" => "dD.123123ddd", "mail" => "normaluser@example.test", "status" => 1]); $u->save(); $c = \Drupal\user\Entity\User::create(["name" => "caruser", "pass" => "dD.123123ddd", "mail" => "caruser@example.test", "status" => 1]); $c->addRole("carousel_admin"); $c->save();' || true
+    - !reference [.fragments, node_playwright]
+    # Slick library (yarn / drupal-libraries-sync style): copy the yarn-installed
+    # slick-carousel into the test libraries dir. CI/test only.
+    - mkdir -p $CI_PROJECT_DIR/$_WEB_ROOT/libraries/slick
+    - if [ -d $CI_PROJECT_DIR/node_modules/slick-carousel/slick ]; then cp -r $CI_PROJECT_DIR/node_modules/slick-carousel/slick/* $CI_PROJECT_DIR/$_WEB_ROOT/libraries/slick/; fi
+    - $CI_PROJECT_DIR/vendor/bin/drush --root=$CI_PROJECT_DIR/$_WEB_ROOT cache:rebuild
+  script:
+    # cucumber.js loads only tests/features/drupal/**. Disable webship-js's auto
+    # HTML hook and run generate-reports explicitly so HTML + PDF land next to
+    # the JSON in tests/reports/.
+    - WEBSHIP_REPORT_DISABLE=1 ./node_modules/.bin/cucumber-js --config cucumber.js --tags "not @wip"
+    - node ./node_modules/webship-js/bin/generate-reports.js
+        --json tests/reports/cucumber_report.json
+        --out  tests/reports/cucumber_report.html
+        --format all
+        --pdf-out tests/reports/cucumber_report.pdf
+  allow_failure: false
+
+# Allow the Varbase stack Composer plugins in the CI build (allow-plugins lives in varbase_project, not modules).
+composer:
+  before_script:
+    - composer config --no-plugins allow-plugins.symfony/runtime true || true
+    - composer config --no-plugins allow-plugins.composer/installers true || true
+    - composer config --no-plugins allow-plugins.cweagans/composer-patches true || true
+    - composer config --no-plugins allow-plugins.oomphinc/composer-installers-extender true || true
+    - composer config --no-plugins allow-plugins.drupal/core-composer-scaffold true || true
+    - composer config --no-plugins allow-plugins.drupal/core-project-message true || true
+    - composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true || true
+    - composer config --no-plugins allow-plugins.phpstan/extension-installer true || true
+    - composer config --no-plugins allow-plugins.php-http/discovery true || true
+    - composer config --no-plugins allow-plugins.tbachert/spi true || true
+    - composer config --no-plugins allow-plugins.vardot/varbase-patches true || true
+    - composer require --no-update vardot/varbase-patches:~10.1.0

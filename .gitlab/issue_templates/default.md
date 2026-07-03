@@ -15,18 +15,13 @@
 - [ ] User Guide Documentation support on feature change/addition
 - [ ] UX/UI designer responsibilities
 - [ ] Accessibility and Readability
-- [ ] Code review from 1 Varbase core team member
+- [ ] Reviewed by a human
+- [ ] Code review by maintainers
 - [ ] Full testing and approval
 - [ ] Credit contributors
 - [ ] Review with the product owner
-- [ ] Update Release Notes and Update Helper on new feature change/addition
+- [ ] Update Release Notes
 - [ ] Release
-
-### [Varbase update type](https://docs.varbase.vardot.com/developers/updating-varbase/handling-configuration-updates#change-or-update-types)
-- [x] No Update
-- [ ] Optional Update
-- [ ] Forced Update
-- [ ] Forced Update if Unchanged
 
 ### API changes
 * N/A

@@ -37,22 +37,6 @@ content:
       class: ""
       cache: 0
       sizes: ""
-      breakpoints:
-        xs:
-          image_style: ""
-          width: ""
-        sm:
-          image_style: ""
-          width: ""
-        md:
-          image_style: ""
-          width: ""
-        lg:
-          image_style: ""
-          width: ""
-        xl:
-          image_style: ""
-          width: ""
       current_view_mode: default
       vanilla: false
       background: false

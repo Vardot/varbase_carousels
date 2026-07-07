@@ -1,3 +1,7 @@
+[![pipeline status](https://git.drupalcode.org/project/varbase_carousels/badges/9.2.x/pipeline.svg)](https://git.drupalcode.org/project/varbase_carousels/-/pipelines)
+[![Varbase Carousels](https://img.shields.io/badge/Varbase%20Carousels-9.2.0-0d6efc?labelColor=001d38&style=flat-square)](https://git.drupalcode.org/project/varbase_carousels/-/pipelines?ref=9.2.0)
+[![Automated Functional Testing](https://git.drupalcode.org/project/varbase_carousels/badges/9.2.x/pipeline.svg)](https://git.drupalcode.org/project/varbase_carousels/-/pipelines)
+
 # Varbase Carousels
 ---
 This feature provides the base implementation for the carousels in your website.

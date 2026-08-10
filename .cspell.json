@@ -145,7 +145,7 @@
     "updateset",
     "yoastseo",
     "Varbasee",
-    "webship",
+    "varbase-e2e",
     "cucumber",
     "playwright",
     "contentinfo",
@@ -203,7 +203,6 @@
     "slidesToShow",
     "slidesToScroll",
     "noreferrer",
-    "noopener",
-    "WEBSHIP"
+    "noopener"
   ]
 }
